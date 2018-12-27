@@ -23,20 +23,20 @@ const pool = new pg.Pool(config);
 // });
 
 
-UserRouter.get('/', (req, res) => {
-    console.log(req.session);
-        if (req.session.user) {
-        var currentid = req.session.user.userid;
-            pool.connect((err, client, done) => {
-            client.query(`select * from "user1" where userid=${currentid}`, (err, result) => {
-                done();
-                if (err) res.status(500).json({success: 2, error: err});
-                else res.status(201).json({success: 1, user: result.rows});
-            });
-        });
-        }
-        else res.status(201).json({success: 0,message: 'no session found'});
-});
+// UserRouter.get('/', (req, res) => {
+//     console.log(req.session);
+//         if (req.session.user) {
+//         var currentid = req.session.user.userid;
+//             pool.connect((err, client, done) => {
+//             client.query(`select * from "user1" where userid=${currentid}`, (err, result) => {
+//                 done();
+//                 if (err) res.status(500).json({success: 2, error: err});
+//                 else res.status(201).json({success: 1, user: result.rows});
+//             });
+//         });
+//         }
+//         else res.status(201).json({success: 0,message: 'no session found'});
+// });
 
 UserRouter.get('/id/:id', (req, res) => {
     const userid=req.params.id;
