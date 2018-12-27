@@ -5,38 +5,22 @@ const pg = require('pg');
 const config = require('./config');
 const pool = new pg.Pool(config);
 
-// UserRouter.post('/', (req,res) => {
-//     const {username, password, name, avatarUrl, gender} = req.body || {};
-//     pool.connect((err, client, done) => {
-//         if (err) res.status(500).json({ success: 0, error: err});
-//         else {
-//             client.query(`INSERT INTO "user"(username,password,name,"avatarUrl",gender)
-//                             VALUES('${username}','${password}','${name}','${avatarUrl}','${gender}');`, (err,result) => {
-//                 done();
-//                 if (err) res.status(500).json({ success: 2, error: err});
-//                 else res.status(201).json({ success: 1, user: result});
-//                 client.end();
-//             });
-//         }
-//         // pool.end();
-//     });
-// });
-
-
-// UserRouter.get('/', (req, res) => {
-//     console.log(req.session);
-//         if (req.session.user) {
-//         var currentid = req.session.user.userid;
-//             pool.connect((err, client, done) => {
-//             client.query(`select * from "user1" where userid=${currentid}`, (err, result) => {
-//                 done();
-//                 if (err) res.status(500).json({success: 2, error: err});
-//                 else res.status(201).json({success: 1, user: result.rows});
-//             });
-//         });
-//         }
-//         else res.status(201).json({success: 0,message: 'no session found'});
-// });
+UserRouter.post('/', (req,res) => {
+    const {username, password,email, age,address} = req.body || {};
+    pool.connect((err, client, done) => {
+        if (err) res.status(500).json({ success: 0, error: err});
+        else {
+            client.query(`INSERT INTO "user1"(username,password,email,age,city) 
+                            VALUES('${username}','${password}','${email}','${age}','${address}');`, (err,result) => {
+                done();
+                if (err) res.status(500).json({ success: 2, error: err});
+                else res.status(201).json({ success: 1, user: result});
+                // client.end();
+            });
+        }
+        // pool.end();
+    });
+});
 
 UserRouter.get('/id/:id', (req, res) => {
     const userid=req.params.id;
@@ -51,41 +35,19 @@ UserRouter.get('/id/:id', (req, res) => {
         }
     });
 });
-
-// UserRouter.put('/:id', (req, res) => {
-//     const {password, name, avatarUrl, gender} = req.body || {};
-//     const userId = req.params.id;
-//
-//     pool.connect((err, client, done) => {
-//         if (err) res.status(500).json({ success: 0, error: err});
-//         else {
-//             client.query(``, (err,result) => {
-//                 done();
-//                 if (err) res.status(500).json({ success: 2, error: err});
-//                 else res.status(201).json({ success: 1, user: result.rows});
-//                 client.end();
-//             });
-//         }
-//         // pool.end();
-//     });
-//     // UserModel.findById(
-//     //     userId,
-//     //     (err, userFound) => {
-//     //         if (err) res.status(500).json({ success: 0, error: err });
-//     //         else if(!userFound) res.status(404).json({ success: 0, error: "No such user"});
-//     //         else {
-//     //             const userChange = {password, name};
-//     //             for(key in userChange) {
-//     //                 if(userChange[key] !== null && userChange[key] !== undefined)
-//     //                     userFound[key] = userChange[key];
-//     //             }
-//     //             userFound.save((err, userUpdated) =>{
-//     //                 if (err) res.status(500).json({ success: 0, error: err });
-//     //                 else res.send({ success: 1, user: userUpdated });
-//     //             });
-//     //         }
-//     //     });
-// });
+UserRouter.get('/username/:username', (req, res) => {
+    const userName=req.params.username;
+    pool.connect((err, client, done) => {
+        if (err) res.status(500).json({success: 0, error: err});
+        else {
+            client.query(`select * from "user1" where username like '${userName}'`, (err, result) => {
+                done();
+                if (err) res.status(500).json({success: 2, error: err});
+                else res.status(201).json({success: 1, user: result.rows});
+            });
+        }
+    });
+});
 
 UserRouter.delete('/id/:id', (req,res) => {
     UserModel.findByIdAndRemove({ _id: req.params.id }).then(userDeleted=>{

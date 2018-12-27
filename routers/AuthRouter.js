@@ -18,10 +18,7 @@ AuthRouter.post('/login', (req,res) => {
                 else {
                     if (password === result.rows[0].password) {
                         var sessionid=result.rows[0].userid;
-                        req.session.user = {userid: result.rows[0].userid};
-                        var userId = req.session.user;
-                        console.log(req.session.user);
-                        res.json({success: 1, userid: sessionid, redirect: `http://localhost:8080/index?id=${result.rows[0].userid}`});
+                        res.json({success: 1, userid: sessionid, redirect: `http://localhost:8080/index.html`});
                     } else res.status(401).json({ success: 0, error: "Wrong password"});
                 }
             });

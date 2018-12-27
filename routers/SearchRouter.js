@@ -29,10 +29,12 @@ SearchRouter.get('/tag/:keyword', (req, res) => {
     pool.connect((err, client, done) => {
         if (err) res.status(500).json({success: 0, error: err});
         else {
-            client.query(`select book.bookname,book.url
-from tagbook
-inner join book on book.bookid=tagbook.bookid
-where tagbook.tag ilike '%${searchstring}%'`, (err, result) => {
+            client.query(`select book.bookid,book.bookname,book.url,author.authorname
+                from tagbook
+                inner join book on book.bookid=tagbook.bookid
+                inner join bookauthor on bookauthor.bookid=tagbook.bookid
+                inner join author on author.authorid=bookauthor.authorid
+                where tagbook.tag ilike '${searchstring}'`, (err, result) => {
                 done();
                 if (err) res.status(500).json({success: 2, error: err});
                 else res.status(201).json({success: 1, book: result.rows});
