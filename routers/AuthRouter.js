@@ -18,7 +18,7 @@ AuthRouter.post('/login', (req,res) => {
                 else {
                     if (password === result.rows[0].password) {
                         var sessionid=result.rows[0].userid;
-                        res.json({success: 1, userid: sessionid, redirect: `http://hedspi-library.herokuapp.com/index.html`||`http://localhost:8080/index.html`});
+                        res.json({success: 1, userid: sessionid, redirect: `http://hedspi-library.azurewebsites.net/index.html`||`http://localhost:8080/index.html`});
                     } else res.status(401).json({ success: 0, error: "Wrong password"});
                 }
             });
@@ -30,7 +30,7 @@ AuthRouter.post('/login', (req,res) => {
 AuthRouter.delete('/logout', (req,res) => {
     req.session.destroy();
     // pool.end();
-    res.send({ success: 1, message:"Logout successfully",redirect: `http://hedspi-library.herokuapp.com/index.html`||`http://localhost:8080/index.html`});
+    res.send({ success: 1, message:"Logout successfully",redirect: `http://hedspi-library.azurewebsites.net/index.html`||`http://localhost:8080/index.html`});
 });
 
 module.exports = AuthRouter;
